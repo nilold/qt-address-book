@@ -33,6 +33,7 @@ public slots:
     void saveEntry();
     void discardEntry();
     void resetEntry();
+    void showAboutDialog();
 
 private:
     Ui::MainWindow *ui;
