@@ -113,9 +113,10 @@ void MainWindow::discardEntry()
 
 void MainWindow::setupConnections()
 {
-    connect(ui->actionAdd, SIGNAL(triggered(bool)),this, SLOT(createEntry())); // old way
+    connect(ui->actionAdd,  &QAction::triggered,this, &MainWindow::createEntry);
     connect(ui->actionRemove, &QAction::triggered, this, &MainWindow::deleteEntry);
     connect(ui->actionEdit, &QAction::triggered, this, &MainWindow::editEntry);
+    connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(editEntry()));
 
     connect(ui->buttonBox->button(QDialogButtonBox::Save), &QPushButton::clicked, this, &MainWindow::saveEntry);
     connect(ui->buttonBox->button(QDialogButtonBox::Discard), &QPushButton::clicked, this, &MainWindow::discardEntry);
