@@ -25,6 +25,9 @@ void MainWindow::createEntry()
         ui->listWidget->addItem(entry->name());
         auto listItem = ui->listWidget->item(ui->listWidget->count()-1);
         m_entryMap.insert(listItem, entry);
+
+        ui->listWidget->setCurrentItem(listItem);
+        editEntry();
     }
 }
 
@@ -52,6 +55,7 @@ void MainWindow::editEntry()
         if(entry){
             ui->stackedWidget->setCurrentWidget(ui->detailsPage);
             ui->menuEntries->setEnabled(false);
+            ui->newEntryButton->hide();
 
             setEntryEditItem(entry);
         }
@@ -104,6 +108,7 @@ void MainWindow::resetEntry()
 void MainWindow::cancel(){
     ui->stackedWidget->setCurrentWidget(ui->listPage);
     ui->menuEntries->setEnabled(true);
+    ui->newEntryButton->show();
 }
 
 void MainWindow::discardEntry()
@@ -113,11 +118,16 @@ void MainWindow::discardEntry()
 
 void MainWindow::setupConnections()
 {
+    //Menu actions
     connect(ui->actionAdd,  &QAction::triggered,this, &MainWindow::createEntry);
     connect(ui->actionRemove, &QAction::triggered, this, &MainWindow::deleteEntry);
     connect(ui->actionEdit, &QAction::triggered, this, &MainWindow::editEntry);
-    connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(editEntry()));
 
+    //Main interface actions
+    connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(editEntry()));
+    connect(ui->newEntryButton, &QPushButton::clicked, this, &MainWindow::createEntry);
+
+    //Details page actions
     connect(ui->buttonBox->button(QDialogButtonBox::Save), &QPushButton::clicked, this, &MainWindow::saveEntry);
     connect(ui->buttonBox->button(QDialogButtonBox::Discard), &QPushButton::clicked, this, &MainWindow::discardEntry);
     connect(ui->buttonBox->button(QDialogButtonBox::Reset), &QPushButton::clicked, this, &MainWindow::resetEntry);
