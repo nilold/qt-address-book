@@ -3,13 +3,21 @@
 
 #include <QObject>
 
-class AddressBookCOntroller : public QObject
+#include "addressbook.h"
+
+class AddressBookController : public QObject
 {
     Q_OBJECT
 public:
-    explicit AddressBookCOntroller(QObject *parent = nullptr);
+    explicit AddressBookController(AddressBook *addressBook, QObject *parent = nullptr);
+
+    AddressBookEntry *createEntry();
+    bool deleteEntry (AddressBookEntry *entry);
 
 signals:
+
+private:
+    AddressBook *m_addressBook;
 
 };
 
